@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
     firstName: String,
     lastName: String,
     email: String,
-    dob: Date,
+    pdgaNum: Number,
     role: {
       type: String,
       enum: ["USER", "TOURNAMENT_DIRECTOR", "ADMIN"],
