@@ -11,8 +11,12 @@ export default function TournamentRoutes(app) {
   };
 
   const deleteTournament = async (req, res) => {
-    const status = await dao.deleteTournament(req.params.tournamentId);
-    res.json(status);
+    try {
+      const status = await dao.deleteTournament(req.params.tournamentId);
+      res.json(status);
+    } catch (err) {
+      res.send(err);
+    }
   };
 
   const findAllTournaments = async (req, res) => {
@@ -28,8 +32,12 @@ export default function TournamentRoutes(app) {
   };
 
   const findTournamentById = async (req, res) => {
-    const tournament = await dao.findTournamentById(req.params.tournamentId);
-    res.json(tournament);
+    try {
+      const tournament = await dao.findTournamentById(req.params.tournamentId);
+      res.json(tournament);
+    } catch (err) {
+      res.send(err);
+    }
   };
 
   const updateTournament = async (req, res) => {

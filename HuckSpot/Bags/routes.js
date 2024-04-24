@@ -3,11 +3,14 @@ import * as dao from "./dao.js";
 export default function BagsRoutes(app) {
   const userBagsDisc = async (req, res) => {
     const currentUser = req.session["currentUser"];
-    const disc = req.body;
-    const userId = currentUser._id;
-
-    await dao.userBagsDisc(userId, disc);
-    res.json("Bagged");
+    if (currentUser) {
+      const disc = req.body;
+      const userId = currentUser._id;
+      await dao.userBagsDisc(userId, disc);
+      res.json("Bagged");
+      return;
+    }
+    res.json("Not Logged In");
   };
   app.post("/api/bags", userBagsDisc);
 

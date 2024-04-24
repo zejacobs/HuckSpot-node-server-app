@@ -17,18 +17,23 @@ export const findTournamentsByQuery = (query) => {
   });
 };
 export const findRecentTournaments = () => model.find().limit(3).sort({ $natural: -1 });
+
 export const registerUserForTournament = async (userId, tournament) => {
   const user = await userModel.findById(userId);
   if (!!user.tournaments.find((t) => t.tournamentId === tournament.tournamentId)) {
     return;
   }
-
   let actualTournament = await model.findOne({ _id: tournament.tournamentId });
-  user.tournaments.push(tournament);
-  actualTournament.registeredPlayers.push({ playerId: user._id, playerName: `${user.firstName} ${user.lastName}` });
-  await user.save();
-  await actualTournament.save();
+  if (actualTournament) {
+    user.tournaments.push(tournament);
+    let playerData = { playerId: user._id, playerName: `${user.firstName} ${user.lastName}` };
+    actualTournament.registeredPlayers.push(playerData);
+    console.log(actualTournament.registeredPlayers);
+    await user.save();
+    await actualTournament.save();
+  }
 };
+
 export const unregisterUserFromTournament = async (userId, tournamentId) => {
   const user = await userModel.findById(userId);
   const tournament = await model.findById(tournamentId);

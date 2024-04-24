@@ -6,7 +6,6 @@ export const userLikesDisc = async (userId, disc) => {
   if (!!user.likedDiscs.find((likedDisc) => likedDisc.discId === disc.discId)) {
     return;
   }
-
   let actualDisc = await discModel.findOne({ discId: disc.discId });
   if (!actualDisc) {
     actualDisc = await discModel.create(disc);
@@ -16,6 +15,7 @@ export const userLikesDisc = async (userId, disc) => {
   await user.save();
   await actualDisc.save();
 };
+
 export const userUnlikesDisc = async (userId, discId) => {
   const user = await userModel.findById(userId);
   const disc = await discModel.findOne({ discId });
