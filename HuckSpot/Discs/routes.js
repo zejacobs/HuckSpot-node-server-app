@@ -41,7 +41,7 @@ export default function DiscRoutes(app) {
   });
 
   app.get("/api/discs", async (req, res) => {
-    const discs = await dao.findDisc();
+    const discs = await dao.findDiscs();
     res.send(discs);
   });
 }
