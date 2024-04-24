@@ -6,6 +6,12 @@ const userDiscSchema = new mongoose.Schema({
   category: String,
 });
 
+const userTournamentSchema = new mongoose.Schema({
+  tournamentId: { type: String, required: true },
+  tournamentName: String,
+  tournamentDate: Date,
+});
+
 const userSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, unique: true },
@@ -21,6 +27,7 @@ const userSchema = new mongoose.Schema(
     },
     likedDiscs: { type: [userDiscSchema] },
     baggedDiscs: { type: [userDiscSchema] },
+    tournaments: { type: [userTournamentSchema] },
   },
   { collection: "users" }
 );

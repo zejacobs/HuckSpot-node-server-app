@@ -7,6 +7,7 @@ import "dotenv/config";
 import UserRoutes from "./HuckSpot/Users/routes.js";
 import DiscRoutes from "./HuckSpot/Discs/routes.js";
 import DiscItApiRoutes from "./HuckSpot/DiscItApi/routes.js";
+import LikeRoutes from "./HuckSpot/Likes/routes.js";
 
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 mongoose.connect(CONNECTION_STRING);
@@ -49,5 +50,6 @@ app.use(session(sessionOptions));
 UserRoutes(app);
 DiscRoutes(app);
 DiscItApiRoutes(app);
+LikeRoutes(app);
 
 app.listen(process.env.PORT || 4000);

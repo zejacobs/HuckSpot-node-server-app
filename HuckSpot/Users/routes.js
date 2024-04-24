@@ -17,7 +17,7 @@ export default function UserRoutes(app) {
 
   const findAllUsers = async (req, res) => {
     const query = req.query;
-    if (true) {
+    if (query) {
       const users = await dao.findUsersByQuery(query);
       res.json(users);
       return;
@@ -59,15 +59,6 @@ export default function UserRoutes(app) {
     }
   };
 
-  const getCurrentUser = async (req, res) => {
-    const currentUser = req.session["currentUser"];
-    if (currentUser) {
-      res.json(currentUser);
-    } else {
-      res.status(403).json({ message: "No logged in user" });
-    }
-  };
-
   const profile = async (req, res) => {
     const currentUser = req.session["currentUser"];
     if (!currentUser) {
@@ -78,7 +69,6 @@ export default function UserRoutes(app) {
   };
 
   const logout = (req, res) => {
-    //currentUser = null;
     req.session.destroy();
     res.sendStatus(200);
   };
@@ -89,7 +79,6 @@ export default function UserRoutes(app) {
   app.post("/api/users/logout", logout);
   app.post("/api/users/register", register);
   app.get("/api/users", findAllUsers);
-  app.get("/api/users/currentuser", getCurrentUser);
   app.get("/api/users/:userId", findUserById);
   app.put("/api/users/:userId", updateUser);
   app.delete("/api/users/:userId", deleteUser);
