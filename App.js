@@ -8,6 +8,8 @@ import UserRoutes from "./HuckSpot/Users/routes.js";
 import DiscRoutes from "./HuckSpot/Discs/routes.js";
 import DiscItApiRoutes from "./HuckSpot/DiscItApi/routes.js";
 import LikeRoutes from "./HuckSpot/Likes/routes.js";
+import BagsRoutes from "./HuckSpot/Bags/routes.js";
+import TournamentRoutes from "./HuckSpot/Tournaments/routes.js";
 
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 mongoose.connect(CONNECTION_STRING);
@@ -51,5 +53,7 @@ UserRoutes(app);
 DiscRoutes(app);
 DiscItApiRoutes(app);
 LikeRoutes(app);
+BagsRoutes(app);
+TournamentRoutes(app);
 
 app.listen(process.env.PORT || 4000);

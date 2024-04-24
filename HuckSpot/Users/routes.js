@@ -17,7 +17,7 @@ export default function UserRoutes(app) {
 
   const findAllUsers = async (req, res) => {
     const query = req.query;
-    if (query) {
+    if (Object.keys(query).length > 0) {
       const users = await dao.findUsersByQuery(query);
       res.json(users);
       return;
@@ -73,11 +73,21 @@ export default function UserRoutes(app) {
     res.sendStatus(200);
   };
 
+  const findUserTournaments = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    if (currentUser) {
+      res.json(currentUser.tournaments);
+      return;
+    }
+    res.json("Not Logged In");
+  };
+
   app.post("/api/users", createUser);
   app.post("/api/users/login", login);
   app.post("/api/users/profile", profile);
   app.post("/api/users/logout", logout);
   app.post("/api/users/register", register);
+  app.get("/api/users/tournaments", findUserTournaments);
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
   app.put("/api/users/:userId", updateUser);

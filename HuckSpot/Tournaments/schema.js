@@ -5,11 +5,16 @@ const registeredPlayer = new mongoose.Schema({
   playerName: String,
 });
 
-const tournamentSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  course: String,
-  date: Date,
-  registeredPlayers: [registeredPlayer],
-});
+const tournamentSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    course: String,
+    date: String,
+    tdName: String,
+    tdId: String,
+    registeredPlayers: [registeredPlayer],
+  },
+  { collection: "tournaments" }
+);
 
 export default tournamentSchema;

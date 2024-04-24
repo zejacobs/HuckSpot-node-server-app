@@ -1,14 +1,24 @@
 import * as dao from "./dao.js";
 
 export default function DiscRoutes(app) {
-  app.get("/api/discs/:discId", async (req, res) => {
+  app.get("/api/discs/:discId/likes", async (req, res) => {
     const { discId } = req.params;
-    const course = await dao.findDiscbyId(discId);
-    if (!course) {
+    const disc = await dao.findDiscbyId(discId);
+    if (!disc[0]) {
       res.status(404).send("Disc not found");
       return;
     }
-    res.send(course);
+    res.send(disc[0].likedBy);
+  });
+
+  app.get("/api/discs/:discId", async (req, res) => {
+    const { discId } = req.params;
+    const disc = await dao.findDiscbyId(discId);
+    if (!disc) {
+      res.status(404).send("Disc not found");
+      return;
+    }
+    res.send(disc);
   });
 
   app.put("/api/discs/:discId", async (req, res) => {
@@ -31,7 +41,7 @@ export default function DiscRoutes(app) {
   });
 
   app.get("/api/discs", async (req, res) => {
-    const courses = await dao.findDisc();
-    res.send(courses);
+    const discs = await dao.findDisc();
+    res.send(discs);
   });
 }

@@ -9,7 +9,7 @@ const userDiscSchema = new mongoose.Schema({
 const userTournamentSchema = new mongoose.Schema({
   tournamentId: { type: String, required: true },
   tournamentName: String,
-  tournamentDate: Date,
+  tournamentDate: String,
 });
 
 const userSchema = new mongoose.Schema(
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     pdgaNum: Number,
     role: {
       type: String,
-      enum: ["USER", "TOURNAMENT_DIRECTOR", "ADMIN"],
+      enum: ["USER", "TD", "ADMIN"],
       default: "USER",
     },
     likedDiscs: { type: [userDiscSchema] },

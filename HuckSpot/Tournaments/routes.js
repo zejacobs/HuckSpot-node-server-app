@@ -17,7 +17,8 @@ export default function TournamentRoutes(app) {
 
   const findAllTournaments = async (req, res) => {
     const query = req.query;
-    if (query) {
+    if (Object.keys(query).length > 0) {
+      console.log(query);
       const tournaments = await dao.findTournamentsByQuery(query);
       res.json(tournaments);
       return;
@@ -37,8 +38,40 @@ export default function TournamentRoutes(app) {
     res.json(status);
   };
 
+  const findRecentTournaments = async (req, res) => {
+    const tournaments = await dao.findRecentTournaments();
+    res.json(tournaments);
+  };
+
+  const unregisterUserFromTournament = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    if (currentUser) {
+      const userId = currentUser._id;
+      const tournamentId = req.params.tournamentId;
+      await dao.unregisterUserFromTournament(userId, tournamentId);
+      res.json("Unregistered");
+      return;
+    }
+    res.json("Not Logged In");
+  };
+
+  const registerUserForTournament = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    if (currentUser) {
+      const tournament = req.body;
+      const userId = currentUser._id;
+      await dao.registerUserForTournament(userId, tournament);
+      res.json("Registered");
+      return;
+    }
+    res.json("Not Logged In");
+  };
+
+  app.post("/api/tournaments/register", registerUserForTournament);
+  app.delete("/api/tournaments/:tournamentId/unregister", unregisterUserFromTournament);
   app.post("/api/tournaments", createTournament);
   app.get("/api/tournaments", findAllTournaments);
+  app.get("/api/tournaments/recent", findRecentTournaments);
   app.get("/api/tournaments/:tournamentId", findTournamentById);
   app.put("/api/tournaments/:tournamentId", updateTournament);
   app.delete("/api/tournaments/:tournamentId", deleteTournament);
