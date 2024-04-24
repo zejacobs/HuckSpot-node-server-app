@@ -12,8 +12,21 @@ export const createTournament = (tournament) => {
 };
 export const findTournamentsByQuery = (query) => {
   const { name, course, date, _id } = query;
+  const mongoQuery = [];
+  if (_id) {
+    mongoQuery.push({ _id: _id });
+  }
+  if (name) {
+    mongoQuery.push({ name: name });
+  }
+  if (course) {
+    mongoQuery.push({ course: course });
+  }
+  if (date) {
+    mongoQuery.push({ date: date });
+  }
   return model.find({
-    $or: [{ _id: _id }, { name: name }, { course: course }, { date: date }],
+    $or: mongoQuery,
   });
 };
 export const findRecentTournaments = () => model.find().limit(3).sort({ $natural: -1 });
@@ -41,4 +54,12 @@ export const unregisterUserFromTournament = async (userId, tournamentId) => {
   tournament.registeredPlayers = tournament.registeredPlayers.filter((player) => player.playerId !== userId);
   await user.save();
   await tournament.save();
+};
+
+export const findTournamentPlayers = async (tournamentId) => {
+  const tournament = await model.findById(tournamentId).populate("registeredPlayers");
+  if (tournament) {
+    return tournament.registeredPlayers;
+  }
+  return [];
 };

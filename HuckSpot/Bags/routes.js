@@ -27,14 +27,18 @@ export default function BagsRoutes(app) {
   };
   app.delete("/api/bags/:discId", userUnbagsDisc);
 
-  app.get("/api/bags", async (req, res) => {
-    const currentUser = req.session["currentUser"];
-    if (currentUser) {
-      const userId = currentUser._id;
+  app.get("/api/bags/:userId", async (req, res) => {
+    //const currentUser = req.session["currentUser"];
+    //if (currentUser) {
+    //const userId = currentUser._id;
+    const userId = req.params.userId;
+    try {
       const baggedDiscs = await dao.findDiscsUserBags(userId);
       res.json(baggedDiscs);
       return;
+    } catch (err) {
+      res.send("User not found");
     }
-    res.send("Not Logged In");
+    //res.send("Not Logged In");
   });
 }

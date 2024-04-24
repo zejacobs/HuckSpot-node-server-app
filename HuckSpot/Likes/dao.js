@@ -29,3 +29,7 @@ export const findDiscsUserLikes = async (userId) => {
   const user = await userModel.findById(userId).populate("likedDiscs");
   return user.likedDiscs;
 };
+
+export const findRecentLikes = async () => {
+  //const recentLikes = await model.find().limit(3).sort({ $natural: -1 }
+};

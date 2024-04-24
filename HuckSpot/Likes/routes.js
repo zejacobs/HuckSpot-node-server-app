@@ -27,14 +27,25 @@ export default function LikeRoutes(app) {
   };
   app.delete("/api/likes/:discId", userUnlikesDisc);
 
-  app.get("/api/likes", async (req, res) => {
-    const currentUser = req.session["currentUser"];
-    if (currentUser) {
-      const userId = currentUser._id;
+  const findRecentLikes = async (req, res) => {
+    const response = await dao.findRecentLikes();
+    res.json(response);
+  };
+  app.get("api/likes/recent");
+
+  const findUserLikes = async (req, res) => {
+    // const currentUser = req.session["currentUser"];
+    //if (currentUser) {
+    //const userId = currentUser._id;
+    const userId = req.params.userId;
+    try {
       const likes = await dao.findDiscsUserLikes(userId);
       res.json(likes);
       return;
+    } catch (err) {
+      res.json([]);
     }
-    res.json([]);
-  });
+    //res.json([]);
+  };
+  app.get("/api/likes/:userId", findUserLikes);
 }

@@ -74,12 +74,17 @@ export default function UserRoutes(app) {
   };
 
   const findUserTournaments = async (req, res) => {
-    const currentUser = req.session["currentUser"];
-    if (currentUser) {
-      res.json(currentUser.tournaments);
+    //const currentUser = req.session["currentUser"];
+    //if (currentUser) {
+    const userId = req.params.userId;
+    try {
+      const user = await dao.findUserById(userId);
+      res.json(user.tournaments);
       return;
+    } catch (err) {
+      res.json([]);
     }
-    res.json("Not Logged In");
+    // res.json("Not Logged In");
   };
 
   app.post("/api/users", createUser);
@@ -87,7 +92,7 @@ export default function UserRoutes(app) {
   app.post("/api/users/profile", profile);
   app.post("/api/users/logout", logout);
   app.post("/api/users/register", register);
-  app.get("/api/users/tournaments", findUserTournaments);
+  app.get("/api/users/tournaments/:userId", findUserTournaments);
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
   app.put("/api/users/:userId", updateUser);

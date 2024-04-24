@@ -1,3 +1,4 @@
+import { json } from "express";
 import * as dao from "./dao.js";
 
 export default function TournamentRoutes(app) {
@@ -75,8 +76,15 @@ export default function TournamentRoutes(app) {
     res.json("Not Logged In");
   };
 
+  const findTournamentPlayers = async (req, res) => {
+    const tournamentId = req.params.tournamentId;
+    const players = await dao.findTournamentPlayers(tournamentId);
+    res.json(players);
+  };
+
   app.post("/api/tournaments/register", registerUserForTournament);
   app.delete("/api/tournaments/:tournamentId/unregister", unregisterUserFromTournament);
+  app.get("/api/tournaments/:tournamentId/players", findTournamentPlayers);
   app.post("/api/tournaments", createTournament);
   app.get("/api/tournaments", findAllTournaments);
   app.get("/api/tournaments/recent", findRecentTournaments);

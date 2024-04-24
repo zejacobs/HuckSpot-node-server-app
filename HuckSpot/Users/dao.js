@@ -1,3 +1,4 @@
+import { mongo } from "mongoose";
 import model from "./model.js";
 
 export const createUser = (user) => {
@@ -9,8 +10,21 @@ export const findUserById = (userId) => model.findById(userId);
 export const findUsersByRole = (role) => model.find({ role: role });
 export const findUsersByQuery = (query) => {
   const { firstName, lastName, pdgaNum, _id } = query;
+  const mongoQuery = [];
+  if (_id) {
+    mongoQuery.push({ _id: _id });
+  }
+  if (pdgaNum) {
+    mongoQuery.push({ pdgaNum: pdgaNum });
+  }
+  if (firstName) {
+    mongoQuery.push({ firstName: firstName });
+  }
+  if (lastName) {
+    mongoQuery.push({ lastName: lastName });
+  }
   return model.find({
-    $or: [{ _id: _id }, { pdgaNum: pdgaNum }, { lastName: lastName }, { firstName: firstName }],
+    $or: mongoQuery,
   });
 };
 export const findUserByUsername = (username) => model.findOne({ username: username });
